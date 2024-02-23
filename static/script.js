@@ -1,43 +1,62 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const questionElement = document.getElementById("question");
-    const optionsElements = [document.getElementById("option0"), document.getElementById("option1"), document.getElementById("option2"), document.getElementById("option3")];
-    const formElement = document.getElementById("options-form");
-    const submitButton = document.getElementById("submit-btn");
-
-    let currentQuestion = 0;
-    let totalQuestions = 0;
-
-    function loadQuestion(questionData) {
-        questionElement.textContent = questionData.question;
-        questionData.options.forEach((option, index) => {
-            optionsElements[index].textContent = option;
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('options-form');
+    const submitButton = document.getElementById('submit-btn');
+    const questionContainer = document.getElementById('question-container');
+    const questions = {{ questions | tojson }};
+    let currentQuestionIndex = 0;
+    
+    // Function to display current question
+    function displayQuestion() {
+        const question = questions[currentQuestionIndex];
+        const optionsForm = `
+            <form id="options-form">
+                <p>${question.question}</p>
+                ${question.options.map((option, index) => `
+                    <label><input type="radio" name="option" value="${index}"> ${option}</label><br>
+                `).join('')}
+            </form>
+        `;
+        questionContainer.innerHTML = optionsForm;
     }
-
-    function checkAnswer() {
-        const selectedOption = formElement.querySelector('input[name="option"]:checked');
+    
+    // Function to handle form submission
+    function handleSubmit(event) {
+        event.preventDefault();
+        
+        // Get selected option
+        const selectedOption = form.querySelector('input[name="option"]:checked');
         if (!selectedOption) {
-            alert("Please select an option.");
+            alert('Please select an option.');
             return;
         }
-        const selectedValue = selectedOption.value;
-        const correctAnswer = questions[currentQuestion].correct_answer;
-        if (selectedValue === correctAnswer) {
-            alert("Your answer is correct!");
+        
+        // Get question
+        const question = questions[currentQuestionIndex];
+        
+        // Get correct answer
+        const correctAnswerIndex = question.correct_answer;
+        const correctAnswer = question.options[correctAnswerIndex];
+        
+        // Check if selected answer is correct
+        if (selectedOption.value === correctAnswerIndex.toString()) {
+            alert('Correct!');
         } else {
-            alert("Your answer is incorrect!");
+            alert('Incorrect! The correct answer is: ' + correctAnswer);
         }
-        currentQuestion++;
-        if (currentQuestion < totalQuestions) {
-            loadQuestion(questions[currentQuestion]);
+        
+        // Move to next question or end if all questions are done
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            displayQuestion();
         } else {
-            alert("Quiz Finished! You have completed the quiz.");
-            // Redirect or perform any other action here after finishing the quiz
+            alert('Quiz completed! No more questions.');
+            questionContainer.innerHTML = ''; // Clear question container
         }
     }
-
-    loadQuestion(questions[currentQuestion]);
-    totalQuestions = questions.length;
-
-    submitButton.addEventListener("click", checkAnswer);
+    
+    // Add event listener for form submission
+    submitButton.addEventListener('click', handleSubmit);
+    
+    // Display first question when page loads
+    displayQuestion();
 });

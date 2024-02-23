@@ -4,23 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Quiz Game</h1>
         <div id="question-container">
-            {% for question in questions %}
-            <p>{{ question.question }}</p>
-            <form id="options-form">
-                {% for option in question.options %}
-                <label><input type="radio" name="option" value="{{ loop.index0 }}"> <span>{{ option }}</span></label><br>
-                {% endfor %}
-            </form>
-            {% endfor %}
+            <!-- Questions will be dynamically inserted here -->
         </div>
         <button id="submit-btn">Submit</button>
     </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="script.js"></script>
 </body>
 </html>

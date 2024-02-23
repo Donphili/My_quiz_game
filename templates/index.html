@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
         <h1>Quiz Game</h1>
         <div id="question-container">
-            <p id="question"></p>
+            {% for question in questions %}
+            <p>{{ question.question }}</p>
             <form id="options-form">
-                <label><input type="radio" name="option" value="0"> <span id="option0"></span></label><br>
-                <label><input type="radio" name="option" value="1"> <span id="option1"></span></label><br>
-                <label><input type="radio" name="option" value="2"> <span id="option2"></span></label><br>
-                <label><input type="radio" name="option" value="3"> <span id="option3"></span></label><br>
+                {% for idx, option in enumerate(question.options) %}
+                <label><input type="radio" name="option" value="{{ idx }}"> <span>{{ option }}</span></label><br>
+                {% endfor %}
             </form>
+            {% endfor %}
         </div>
         <button id="submit-btn">Submit</button>
     </div>
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

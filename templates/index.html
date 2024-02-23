@@ -13,8 +13,8 @@
             {% for question in questions %}
             <p>{{ question.question }}</p>
             <form id="options-form">
-                {% for idx, option in enumerate(question.options) %}
-                <label><input type="radio" name="option" value="{{ idx }}"> <span>{{ option }}</span></label><br>
+                {% for option in question.options %}
+                <label><input type="radio" name="option" value="{{ loop.index0 }}"> <span>{{ option }}</span></label><br>
                 {% endfor %}
             </form>
             {% endfor %}

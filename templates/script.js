@@ -1,10 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('options-form');
     const submitButton = document.getElementById('submit-btn');
-    const questionContainer = document.getElementById('question-container');
-    const questions = {{ questions | tojson }};
-    let currentQuestionIndex = 0;
-
+    const questionContainer = document.getElementById('question-container');                                                             
+    const questions = [
+        {
+            "question": "Where is Mt. Everest Located?",
+            "options": ["a. Nepal", "b. India", "c. Sri Lanka", "d. Japan"],
+            "correct_answer": 0
+        },
+        {
+            "question": "Which team is the winner of IPL 2021?",
+            "options": ["a. MI", "b. RCB", "c. CSK", "d. KKR"],
+            "correct_answer": 2
+        },
+        {
+            "question": "Who is the father of Computer?",
+            "options": ["a. Albert Einstein", "b. Phunsukh Wangdu", "c. Elon Musk", "d. Charles Babbage"],
+            "correct_answer": 3
+        }
+    ];
+    let currentQuestionIndex = 0;                                  
+    
     // Function to display current question
     function displayQuestion() {
         const question = questions[currentQuestionIndex];

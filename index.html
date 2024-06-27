@@ -16,6 +16,73 @@
         </form>
         <div id="result"></div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // Define the questions
+        const questions = [
+            { prompt: "Who won the FIFA World Cup in 2018?\n(a) Brazil\n(b) Germany\n(c) France\n", answer: "c" },
+            { prompt: "Which player has won the most Ballon d'Or awards?\n(a) Cristiano Ronaldo\n(b) Lionel Messi\n(c) Neymar\n", answer: "b" },
+            { prompt: "Which country has won the most UEFA European Championship titles?\n(a) Spain\n(b) Germany\n(c) Italy\n", answer: "a" },
+            { prompt: "Who created the Python programming language?\n(a) Guido van Rossum\n(b) Larry Page\n(c) Mark Zuckerberg\n", answer: "a" },
+            { prompt: "Which company developed the Android operating system?\n(a) Apple\n(b) Google\n(c) Microsoft\n", answer: "b" },
+            { prompt: "What does HTML stand for?\n(a) Hyper Text Markup Language\n(b) High Tech Multi Language\n(c) Home Tool Markup Language\n", answer: "a" },
+            { prompt: "Who is known as the 'King of Pop'?\n(a) Michael Jackson\n(b) Elvis Presley\n(c) Madonna\n", answer: "a" },
+            { prompt: "Which band released the album 'Abbey Road'?\n(a) The Beatles\n(b) The Rolling Stones\n(c) Led Zeppelin\n", answer: "a" },
+            { prompt: "Which artist has won the most Grammy Awards?\n(a) Beyoncé\n(b) Jay-Z\n(c) Taylor Swift\n", answer: "a" },
+            { prompt: "Which player has the most appearances for Liverpool FC?\n(a) Steven Gerrard\n(b) Jamie Carragher\n(c) Ian Rush\n", answer: "a" },
+            { prompt: "Who is Liverpool FC's all-time top goalscorer?\n(a) Mohamed Salah\n(b) Kenny Dalglish\n(c) Ian Rush\n", answer: "c" },
+            { prompt: "Who is the current manager of Liverpool FC?\n(a) Jurgen Klopp\n(b) Pep Guardiola\n(c) Jose Mourinho\n", answer: "a" },
+            { prompt: "What is the capital of Japan?\n(a) Tokyo\n(b) Beijing\n(c) Seoul\n", answer: "a" },
+            { prompt: "Which planet is known as the 'Red Planet'?\n(a) Mars\n(b) Jupiter\n(c) Saturn\n", answer: "a" },
+            { prompt: "Who wrote the play 'Romeo and Juliet'?\n(a) William Shakespeare\n(b) Charles Dickens\n(c) Jane Austen\n", answer: "a" },
+            { prompt: "What is the chemical symbol for water?\n(a) Wo\n(b) Wa\n(c) H2O\n", answer: "c" },
+            { prompt: "Which is the largest ocean on Earth?\n(a) Pacific Ocean\n(b) Atlantic Ocean\n(c) Indian Ocean\n", answer: "a" },
+            { prompt: "Who painted the Mona Lisa?\n(a) Leonardo da Vinci\n(b) Vincent van Gogh\n(c) Pablo Picasso\n", answer: "a" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const resultElement = document.getElementById('result');
+        const quizForm = document.getElementById('quiz-form');
+
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.prompt.split('\n')[0];
+            optionsElement.innerHTML = '';
+            const options = currentQuestion.prompt.split('\n').slice(1);
+            options.forEach(option => {
+                const label = document.createElement('label');
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'option';
+                input.value = option.trim().slice(3);
+                label.appendChild(input);
+                label.appendChild(document.createTextNode(option.trim()));
+                optionsElement.appendChild(label);
+            });
+        }
+
+        quizForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const selectedOption = quizForm.elements['option'].value;
+            if (selectedOption === questions[currentQuestionIndex].answer) {
+                score++;
+                resultElement.textContent = 'Correct!';
+            } else {
+                resultElement.textContent = `Wrong! The correct answer was ${questions[currentQuestionIndex].answer}.`;
+            }
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                questionElement.textContent = 'Quiz Over!';
+                optionsElement.innerHTML = '';
+                resultElement.innerHTML += `<p>Your final score is ${score} out of ${questions.length}.</p>`;
+            }
+        });
+
+        loadQuestion();
+    </script>
 </body>
 </html>
